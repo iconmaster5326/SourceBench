@@ -11,6 +11,7 @@ import com.iconmaster.source.prototype.Prototyper;
 import com.iconmaster.source.tokenize.Tokenizer;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
@@ -168,6 +169,11 @@ public class MainGui extends javax.swing.JFrame {
         });
 
         buttonSave.setText("Save File");
+        buttonSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSaveActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -413,6 +419,20 @@ public class MainGui extends javax.swing.JFrame {
 		}
     }//GEN-LAST:event_buttonLoadActionPerformed
 
+    private void buttonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSaveActionPerformed
+		String input = fieldSave.getText();
+		File f = new File(input);
+		input = fieldOutput.getText();
+		try {
+			PrintWriter pw = new PrintWriter(f);
+			pw.print(input);
+			pw.flush();
+			pw.close();
+		} catch (FileNotFoundException ex) {
+			JOptionPane.showMessageDialog(getRootPane(), "The file could not be written to.", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+    }//GEN-LAST:event_buttonSaveActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonCompile;
     private javax.swing.JButton buttonLoad;
@@ -423,22 +443,17 @@ public class MainGui extends javax.swing.JFrame {
     private javax.swing.JTextPane fieldLog;
     private javax.swing.JTextPane fieldOutput;
     private javax.swing.JTextField fieldSave;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextPane jTextPane3;
     private javax.swing.JMenuItem menuAbout;
     private javax.swing.JMenuItem menuExit;
     private javax.swing.JMenu menuFile;
