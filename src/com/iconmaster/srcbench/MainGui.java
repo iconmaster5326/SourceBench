@@ -348,9 +348,7 @@ public class MainGui extends javax.swing.JFrame {
 			printLog("Prototyping complete.");
 			printLog("Linking...");
 			phase = "linking";
-			Linker linker = new Linker("HPPL");
-			linker.linkUserPackage(ret.result);
-			linker.manageLinks();
+			Linker linker = Linker.link("HPPL", ret.result);
 			printLog(linker);
 			if (!linker.unresolvedImports.isEmpty()) {
 				printLog("Got some errors in linking:");
