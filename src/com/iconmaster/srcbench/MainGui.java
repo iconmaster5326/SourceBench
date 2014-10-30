@@ -2,13 +2,13 @@ package com.iconmaster.srcbench;
 
 import com.iconmaster.source.assemble.Assembler;
 import com.iconmaster.source.compile.SourceCompiler;
-import com.iconmaster.source.compile.TypeChecker;
 import com.iconmaster.source.element.Element;
 import com.iconmaster.source.exception.SourceException;
 import com.iconmaster.source.link.Linker;
 import com.iconmaster.source.parse.Parser;
 import com.iconmaster.source.prototype.Prototyper;
 import com.iconmaster.source.tokenize.Tokenizer;
+import com.iconmaster.source.validate.Validator;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -332,6 +332,18 @@ public class MainGui extends javax.swing.JFrame {
 				return;
 			}
 			printLog("Parsing complete.");
+			printLog("Validating...");
+			ArrayList<SourceException> errs2 = Validator.validate(a);
+			if (!errs2.isEmpty()) {
+				printLog("Got some errors in validating:");
+				for (SourceException err : errs2) {
+					printLog("\t"+err.getMessage());
+				}
+				errs.addAll(errs2);
+				printErrors(errs);
+				return;
+			}
+			printLog("Validating complete.");
 			printLog("Prototyping...");
 			phase = "prototyping";
 			Prototyper.PrototypeResult ret = Prototyper.prototype(a);
@@ -361,7 +373,7 @@ public class MainGui extends javax.swing.JFrame {
 			printLog("Linking complete.");
 			printLog("Compiling...");
 			phase = "compiling";
-			ArrayList<SourceException> errs2 = SourceCompiler.compile(linker.pkg);
+			errs2 = SourceCompiler.compile(linker.pkg);
 			printLog(linker);
 			if (!errs2.isEmpty()) {
 				printLog("Got some errors in compiling:");
@@ -373,20 +385,6 @@ public class MainGui extends javax.swing.JFrame {
 				return;
 			}
 			printLog("Compiling complete.");
-			printLog("Checking types...");
-			phase = "checking";
-			errs2 = TypeChecker.check(linker.pkg);
-			printLog(linker);
-			if (!errs2.isEmpty()) {
-				printLog("Got some errors in checking:");
-				for (SourceException err : errs2) {
-					printLog("\t"+err.getMessage());
-				}
-				errs.addAll(errs2);
-				printErrors(errs);
-				return;
-			}
-			printLog("Types checked.");
 			printLog("Assembling...");
 			phase = "assembly";
 			String output = Assembler.assemble("HPPL", linker.pkg);
