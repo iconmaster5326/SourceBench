@@ -29,7 +29,7 @@ public class LibraryLoader {
         addURL(f.toURI().toURL());
     }
 
-    public static void addURL(URL u) throws IOException
+    public static ClassLoader addURL(URL u) throws IOException
     {
         URLClassLoader sysloader = (URLClassLoader) ClassLoader.getSystemClassLoader();
         Class sysclass = URLClassLoader.class;
@@ -42,6 +42,6 @@ public class LibraryLoader {
             Logger.getLogger(LibraryLoader.class.getName()).log(Level.SEVERE, "error loading {0}", u);
             throw new IOException("Error, could not add URL to system classloader");
         }
-
+		return sysloader;
     }
 }
