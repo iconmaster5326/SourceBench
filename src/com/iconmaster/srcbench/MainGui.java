@@ -1,16 +1,12 @@
 package com.iconmaster.srcbench;
 
-import com.iconmaster.source.assemble.Assembler;
-import com.iconmaster.source.compile.SourceCompiler;
-import com.iconmaster.source.element.Element;
+import com.iconmaster.source.Source;
+import com.iconmaster.source.SourceOutput;
 import com.iconmaster.source.exception.SourceException;
-import com.iconmaster.source.link.Linker;
-import com.iconmaster.source.parse.Parser;
-import com.iconmaster.source.prototype.Prototyper;
-import com.iconmaster.source.tokenize.Tokenizer;
-import com.iconmaster.source.validate.Validator;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -301,98 +297,24 @@ public class MainGui extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonCompileMouseClicked
 
     private void buttonCompileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCompileActionPerformed
-		String phase = "tokenization";
 		try {
-			ArrayList<SourceException> errs = new ArrayList<>();
 			String input = fieldInput.getText();
 			printLog("Got input. Compiling...");
 			printLog("");
-			printLog("Tokenizing...");
-			ArrayList<Element> a;
-			try {
-				a = Tokenizer.tokenize(input);
-				printLog(a);
-			} catch (SourceException ex) {
-				printLog("Got an error in tokenization:");
-				printLog("\t"+ex.getMessage());
-				errs.add(ex);
-				return;
-			}
-			printLog("Tokenization complete.");
-			printLog("Parsing...");
-			phase = "parsing";
-			try {
-				a = Parser.parse(a);
-				printLog(a);
-			} catch (SourceException ex) {
-				printLog("Got an error in parsing:");
-				printLog("\t"+ex.getMessage());
-				errs.add(ex);
-				printErrors(errs);
-				return;
-			}
-			printLog("Parsing complete.");
-			printLog("Validating...");
-			ArrayList<SourceException> errs2 = Validator.validate(a);
-			if (!errs2.isEmpty()) {
-				printLog("Got some errors in validating:");
-				for (SourceException err : errs2) {
-					printLog("\t"+err.getMessage());
+			SourceOutput so = Source.compile(input, "HPPL", new OutputStream() {
+				@Override
+				public void write(int b) throws IOException {
+					printLog(Character.toString((char) b));
 				}
-				errs.addAll(errs2);
-				printErrors(errs);
-				return;
+			});
+			if (!so.dets.isEmpty()) {
+				fieldOutput.setText("There were errors found:\n\t"+so.errMsgs.replace("\n", "\n\t"));
+			} else {
+				fieldOutput.setText(so.output);
 			}
-			printLog("Validating complete.");
-			printLog("Prototyping...");
-			phase = "prototyping";
-			Prototyper.PrototypeResult ret = Prototyper.prototype(a);
-			printLog(ret.result);
-			if (!ret.errors.isEmpty()) {
-				printLog("Got some errors in prototyping:");
-				for (SourceException err : ret.errors) {
-					printLog("\t"+err.getMessage());
-				}
-				errs.addAll(ret.errors);
-				printErrors(errs);
-				return;
-			}
-			printLog("Prototyping complete.");
-			printLog("Linking...");
-			phase = "linking";
-			Linker linker = Linker.link("HPPL", ret.result);
-			printLog(linker);
-			if (!linker.unresolvedImports.isEmpty()) {
-				printLog("Got some errors in linking:");
-				for (String err : linker.unresolvedImports) {
-					printLog("\tUnresloved import "+err);
-				}
-				printErrors(errs);
-				return;
-			}
-			printLog("Linking complete.");
-			printLog("Compiling...");
-			phase = "compiling";
-			errs2 = SourceCompiler.compile(linker.pkg);
-			printLog(linker);
-			if (!errs2.isEmpty()) {
-				printLog("Got some errors in compiling:");
-				for (SourceException err : errs2) {
-					printLog("\t"+err.getMessage());
-				}
-				errs.addAll(errs2);
-				printErrors(errs);
-				return;
-			}
-			printLog("Compiling complete.");
-			printLog("Assembling...");
-			phase = "assembly";
-			String output = Assembler.assemble("HPPL", linker.pkg);
-			printLog(output);
-			fieldOutput.setText(output);
 			printLog("");
 		} catch (Exception ex) {
-			fieldOutput.setText("An unknown error occured in "+phase+".");
+			fieldOutput.setText("An unknown error occured.");
 		}
     }//GEN-LAST:event_buttonCompileActionPerformed
 
@@ -457,7 +379,7 @@ public class MainGui extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
 	public void printLog(Object text) {
-		fieldLog.setText(fieldLog.getText()+text+"\n");
+		fieldLog.setText(fieldLog.getText()+text);
 	}
 
 	public void printErrors(ArrayList<SourceException> a) {
