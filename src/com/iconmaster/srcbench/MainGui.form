@@ -144,11 +144,15 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="buttonCompile" min="-2" pref="204" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
+                                  <Component id="boxShowErrors" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              </Group>
+                              <Component id="buttonCompile" alignment="1" min="-2" pref="204" max="-2" attributes="0"/>
+                              <Group type="102" alignment="1" attributes="0">
                                   <Component id="jLabel1" min="-2" pref="65" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="32767" attributes="0"/>
                                   <Component id="choicePlatform" min="-2" pref="121" max="-2" attributes="0"/>
@@ -166,7 +170,9 @@
                               <Component id="choicePlatform" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="336" max="32767" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="boxShowErrors" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace pref="295" max="32767" attributes="0"/>
                           <Component id="buttonCompile" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -184,6 +190,7 @@
                     <Property name="selectedItem" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="new javax.swing.DefaultComboBoxModel(SourceBench.plats)" type="code"/>
                     </Property>
+                    <Property name="toolTipText" type="java.lang.String" value="The platform you want to compile to. Only has HPPL by default."/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel1">
@@ -194,11 +201,18 @@
                 <Component class="javax.swing.JButton" name="buttonCompile">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Compile!"/>
+                    <Property name="toolTipText" type="java.lang.String" value="Turn your input into compiled output!"/>
                   </Properties>
                   <Events>
                     <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonCompileMouseClicked"/>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonCompileActionPerformed"/>
                   </Events>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="boxShowErrors">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Show system errors?"/>
+                    <Property name="toolTipText" type="java.lang.String" value="If true, every error that&apos;s not a Source-specific exception will show up. For development purposes!"/>
+                  </Properties>
                 </Component>
               </SubComponents>
             </Container>

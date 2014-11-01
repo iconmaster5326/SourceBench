@@ -43,6 +43,7 @@ public class MainGui extends javax.swing.JFrame {
         choicePlatform = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
         buttonCompile = new javax.swing.JButton();
+        boxShowErrors = new javax.swing.JCheckBox();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         fieldInput = new javax.swing.JTextPane();
@@ -75,10 +76,12 @@ public class MainGui extends javax.swing.JFrame {
 
         choicePlatform.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "HPPL" }));
         choicePlatform.setSelectedItem(new javax.swing.DefaultComboBoxModel(SourceBench.plats));
+        choicePlatform.setToolTipText("The platform you want to compile to. Only has HPPL by default.");
 
         jLabel1.setText("Platform:");
 
         buttonCompile.setText("Compile!");
+        buttonCompile.setToolTipText("Turn your input into compiled output!");
         buttonCompile.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 buttonCompileMouseClicked(evt);
@@ -90,15 +93,21 @@ public class MainGui extends javax.swing.JFrame {
             }
         });
 
+        boxShowErrors.setText("Show system errors?");
+        boxShowErrors.setToolTipText("If true, every error that's not a Source-specific exception will show up. For development purposes!");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+            .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(buttonCompile, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(boxShowErrors)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(buttonCompile, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, Short.MAX_VALUE)
                         .addComponent(choicePlatform, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -111,7 +120,9 @@ public class MainGui extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(choicePlatform, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 336, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(boxShowErrors)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 295, Short.MAX_VALUE)
                 .addComponent(buttonCompile)
                 .addContainerGap())
         );
@@ -314,7 +325,7 @@ public class MainGui extends javax.swing.JFrame {
 			String input = fieldInput.getText();
 			printLog("Got input. Compiling...\n\n");
 			printLog("");
-			StringBuilder sb = new StringBuilder();
+			final StringBuilder sb = new StringBuilder();
 			SourceOutput so = Source.compile(input, (String) choicePlatform.getModel().getSelectedItem(), new OutputStream() {
 				@Override
 				public void write(int b) throws IOException {
@@ -323,7 +334,18 @@ public class MainGui extends javax.swing.JFrame {
 			});
 			printLog(sb.toString());
 			if (!so.dets.isEmpty()) {
-				fieldOutput.setText("There were errors found:\n\t"+so.errMsgs.replace("\n", "\n\t"));
+				if (boxShowErrors.isSelected()) {
+					fieldOutput.setText("There were errors found:\n\t"+so.errMsgs.replace("\n", "\n\t"));
+				} else {
+					StringBuilder sb2 = new StringBuilder();
+					sb2.append("There were errors found:\n");
+					for (SourceException err : so.errs) {
+						sb2.append("\t");
+						sb2.append(err.getMessage());
+						sb2.append("\n");
+					}
+					fieldOutput.setText(sb2.toString());
+				}
 			} else {
 				fieldOutput.setText(so.output);
 			}
@@ -373,6 +395,7 @@ public class MainGui extends javax.swing.JFrame {
     }//GEN-LAST:event_menuLoadPlatActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox boxShowErrors;
     private javax.swing.JButton buttonCompile;
     private javax.swing.JButton buttonLoad;
     private javax.swing.JButton buttonSave;
