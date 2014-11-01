@@ -144,18 +144,21 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
+                      <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Component id="boxShowErrors" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              </Group>
                               <Component id="buttonCompile" alignment="1" min="-2" pref="204" max="-2" attributes="0"/>
                               <Group type="102" alignment="1" attributes="0">
                                   <Component id="jLabel1" min="-2" pref="65" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="32767" attributes="0"/>
                                   <Component id="choicePlatform" min="-2" pref="121" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="boxShowErrors" min="-2" max="-2" attributes="0"/>
+                                      <Component id="buttonRun" alignment="0" min="-2" pref="204" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
@@ -172,7 +175,9 @@
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="boxShowErrors" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="295" max="32767" attributes="0"/>
+                          <EmptySpace pref="266" max="32767" attributes="0"/>
+                          <Component id="buttonRun" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="buttonCompile" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -192,6 +197,9 @@
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" value="The platform you want to compile to. Only has HPPL by default."/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="choicePlatformActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel1">
                   <Properties>
@@ -200,7 +208,7 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="buttonCompile">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Compile!"/>
+                    <Property name="text" type="java.lang.String" value="Compile"/>
                     <Property name="toolTipText" type="java.lang.String" value="Turn your input into compiled output!"/>
                   </Properties>
                   <Events>
@@ -213,6 +221,16 @@
                     <Property name="text" type="java.lang.String" value="Show system errors?"/>
                     <Property name="toolTipText" type="java.lang.String" value="If true, every error that&apos;s not a Source-specific exception will show up. For development purposes!"/>
                   </Properties>
+                </Component>
+                <Component class="javax.swing.JButton" name="buttonRun">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Run"/>
+                    <Property name="toolTipText" type="java.lang.String" value="Turn your input into compiled output!"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="buttonRunMouseClicked"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonRunActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
