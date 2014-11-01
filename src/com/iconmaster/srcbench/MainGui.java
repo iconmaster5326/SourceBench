@@ -314,12 +314,14 @@ public class MainGui extends javax.swing.JFrame {
 			String input = fieldInput.getText();
 			printLog("Got input. Compiling...\n\n");
 			printLog("");
+			StringBuilder sb = new StringBuilder();
 			SourceOutput so = Source.compile(input, (String) choicePlatform.getModel().getSelectedItem(), new OutputStream() {
 				@Override
 				public void write(int b) throws IOException {
-					printLog(Character.toString((char) b));
+					sb.append((char)b);
 				}
 			});
+			printLog(sb.toString());
 			if (!so.dets.isEmpty()) {
 				fieldOutput.setText("There were errors found:\n\t"+so.errMsgs.replace("\n", "\n\t"));
 			} else {
