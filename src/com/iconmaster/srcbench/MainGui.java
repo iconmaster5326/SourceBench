@@ -3,6 +3,7 @@ package com.iconmaster.srcbench;
 import com.iconmaster.source.Source;
 import com.iconmaster.source.SourceOutput;
 import com.iconmaster.source.exception.SourceException;
+import static com.iconmaster.srcbench.SourceBench.reloadPlatforms;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -23,6 +24,8 @@ public class MainGui extends javax.swing.JFrame {
 	 */
 	public MainGui() {
 		initComponents();
+		
+		choicePlatform.setModel(new javax.swing.DefaultComboBoxModel(SourceBench.plats));
 	}
 
 	/**
@@ -37,7 +40,7 @@ public class MainGui extends javax.swing.JFrame {
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        choicePlatofrm = new javax.swing.JComboBox();
+        choicePlatform = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
         buttonCompile = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
@@ -55,6 +58,7 @@ public class MainGui extends javax.swing.JFrame {
         fieldLog = new javax.swing.JTextPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuFile = new javax.swing.JMenu();
+        menuLoadPlat = new javax.swing.JMenuItem();
         menuExit = new javax.swing.JMenuItem();
         menuHelp = new javax.swing.JMenu();
         menuAbout = new javax.swing.JMenuItem();
@@ -69,7 +73,8 @@ public class MainGui extends javax.swing.JFrame {
         jPanel3.setMaximumSize(new java.awt.Dimension(236, 425));
         jPanel3.setMinimumSize(new java.awt.Dimension(236, 425));
 
-        choicePlatofrm.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "HPPL" }));
+        choicePlatform.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "HPPL" }));
+        choicePlatform.setSelectedItem(new javax.swing.DefaultComboBoxModel(SourceBench.plats));
 
         jLabel1.setText("Platform:");
 
@@ -96,7 +101,7 @@ public class MainGui extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, Short.MAX_VALUE)
-                        .addComponent(choicePlatofrm, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(choicePlatform, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -104,7 +109,7 @@ public class MainGui extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(choicePlatofrm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(choicePlatform, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 336, Short.MAX_VALUE)
                 .addComponent(buttonCompile)
@@ -242,6 +247,14 @@ public class MainGui extends javax.swing.JFrame {
 
         menuFile.setText("File");
 
+        menuLoadPlat.setText("Reload Platforms");
+        menuLoadPlat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuLoadPlatActionPerformed(evt);
+            }
+        });
+        menuFile.add(menuLoadPlat);
+
         menuExit.setText("Exit");
         menuExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -299,9 +312,9 @@ public class MainGui extends javax.swing.JFrame {
     private void buttonCompileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCompileActionPerformed
 		try {
 			String input = fieldInput.getText();
-			printLog("Got input. Compiling...");
+			printLog("Got input. Compiling...\n\n");
 			printLog("");
-			SourceOutput so = Source.compile(input, "HPPL", new OutputStream() {
+			SourceOutput so = Source.compile(input, (String) choicePlatform.getModel().getSelectedItem(), new OutputStream() {
 				@Override
 				public void write(int b) throws IOException {
 					printLog(Character.toString((char) b));
@@ -351,11 +364,17 @@ public class MainGui extends javax.swing.JFrame {
 		}
     }//GEN-LAST:event_buttonSaveActionPerformed
 
+    private void menuLoadPlatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuLoadPlatActionPerformed
+        reloadPlatforms();
+		
+		choicePlatform.setModel(new javax.swing.DefaultComboBoxModel(SourceBench.plats));
+    }//GEN-LAST:event_menuLoadPlatActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonCompile;
     private javax.swing.JButton buttonLoad;
     private javax.swing.JButton buttonSave;
-    private javax.swing.JComboBox choicePlatofrm;
+    private javax.swing.JComboBox choicePlatform;
     private javax.swing.JTextPane fieldInput;
     private javax.swing.JTextField fieldLoad;
     private javax.swing.JTextPane fieldLog;
@@ -376,6 +395,7 @@ public class MainGui extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuExit;
     private javax.swing.JMenu menuFile;
     private javax.swing.JMenu menuHelp;
+    private javax.swing.JMenuItem menuLoadPlat;
     // End of variables declaration//GEN-END:variables
 
 	public void printLog(Object text) {

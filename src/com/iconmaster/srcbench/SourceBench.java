@@ -1,5 +1,9 @@
 package com.iconmaster.srcbench;
 
+import com.iconmaster.source.Source;
+import com.iconmaster.source.link.Linker;
+import com.iconmaster.source.link.platform.PlatformLoader;
+import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -9,6 +13,8 @@ import javax.swing.JOptionPane;
  * @author iconmaster
  */
 public class SourceBench {
+	
+	public static String[] plats = new String[] {"HPPL"};
 
 	/**
 	 * @param args the command line arguments
@@ -38,6 +44,30 @@ public class SourceBench {
 		java.awt.EventQueue.invokeLater(() -> {
 			new MainGui().setVisible(true);
 		});
+		
+		File f = new File("BenchData");
+		if (!f.exists()) {
+			f.mkdir();
+		}
+		f = new File("BenchData/libs");
+		if (!f.exists()) {
+			f.mkdir();
+		}
+		
+		reloadPlatforms();
+	}
+	
+	public static void reloadPlatforms() {
+		File f = new File("BenchData/libs");
+		for (File child : f.listFiles((File dir, String name) -> name.endsWith(".jar"))) {
+			try {
+				PlatformLoader.loadPlatform(child);
+			} catch (Exception ex) {
+				Logger.getLogger(Source.class.getName()).log(Level.SEVERE, "error in loading library "+f, ex);
+			}
+		}
+		
+		plats = Linker.platforms.keySet().toArray(plats);
 	}
 	
 }
