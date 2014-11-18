@@ -53,6 +53,14 @@ public class SourceBench {
 		if (!f.exists()) {
 			f.mkdir();
 		}
+		f = new File("BenchData/src");
+		if (!f.exists()) {
+			f.mkdir();
+		}
+		f = new File("BenchData/assets");
+		if (!f.exists()) {
+			f.mkdir();
+		}
 		
 		reloadPlatforms();
 	}

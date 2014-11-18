@@ -351,7 +351,7 @@ public class MainGui extends javax.swing.JFrame {
 			String input = fieldInput.getText();
 			printLog("Got input. Compiling...\n\n");
 			printLog("");
-			SourceOutput so = Source.execute(new SourceOptions(input, (String) choicePlatform.getModel().getSelectedItem(), true));
+			SourceOutput so = Source.execute(new SourceOptions(input, (String) choicePlatform.getModel().getSelectedItem(), true).setFiles(new File("BenchData/assets"), new File("BenchData/src"), null));
 			printLog(so.operationLog);
 			if (!so.dets.isEmpty()) {
 				if (boxShowErrors.isSelected()) {
@@ -423,7 +423,7 @@ public class MainGui extends javax.swing.JFrame {
 			String input = fieldInput.getText();
 			printLog("Got input. Running...\n\n");
 			printLog("");
-			SourceOutput so = Source.execute(new SourceOptions(input, (String) choicePlatform.getModel().getSelectedItem(), false));
+			SourceOutput so = Source.execute(new SourceOptions(input, (String) choicePlatform.getModel().getSelectedItem(), false).setFiles(new File("BenchData/assets"), new File("BenchData/src"), null));
 			printLog(so.operationLog);
 			if (!so.dets.isEmpty()) {
 				if (boxShowErrors.isSelected()) {
