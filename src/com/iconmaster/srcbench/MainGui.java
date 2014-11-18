@@ -1,6 +1,7 @@
 package com.iconmaster.srcbench;
 
 import com.iconmaster.source.Source;
+import com.iconmaster.source.SourceOptions;
 import com.iconmaster.source.SourceOutput;
 import com.iconmaster.source.exception.SourceException;
 import com.iconmaster.source.link.Linker;
@@ -8,8 +9,6 @@ import com.iconmaster.source.link.Platform;
 import static com.iconmaster.srcbench.SourceBench.reloadPlatforms;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -352,14 +351,8 @@ public class MainGui extends javax.swing.JFrame {
 			String input = fieldInput.getText();
 			printLog("Got input. Compiling...\n\n");
 			printLog("");
-			final StringBuilder sb = new StringBuilder();
-			SourceOutput so = Source.compile(input, (String) choicePlatform.getModel().getSelectedItem(), new OutputStream() {
-				@Override
-				public void write(int b) throws IOException {
-					sb.append((char)b);
-				}
-			});
-			printLog(sb.toString());
+			SourceOutput so = Source.execute(new SourceOptions(input, (String) choicePlatform.getModel().getSelectedItem(), true));
+			printLog(so.operationLog);
 			if (!so.dets.isEmpty()) {
 				if (boxShowErrors.isSelected()) {
 					fieldOutput.setText("There were errors found:\n\t"+so.errMsgs.replace("\n", "\n\t"));
@@ -430,14 +423,8 @@ public class MainGui extends javax.swing.JFrame {
 			String input = fieldInput.getText();
 			printLog("Got input. Running...\n\n");
 			printLog("");
-			final StringBuilder sb = new StringBuilder();
-			SourceOutput so = Source.run(input, (String) choicePlatform.getModel().getSelectedItem(), new OutputStream() {
-				@Override
-				public void write(int b) throws IOException {
-					sb.append((char)b);
-				}
-			});
-			printLog(sb.toString());
+			SourceOutput so = Source.execute(new SourceOptions(input, (String) choicePlatform.getModel().getSelectedItem(), false));
+			printLog(so.operationLog);
 			if (!so.dets.isEmpty()) {
 				if (boxShowErrors.isSelected()) {
 					fieldOutput.setText("There were errors found:\n\t"+so.errMsgs.replace("\n", "\n\t"));
