@@ -376,7 +376,7 @@ public class MainGui extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonCompileActionPerformed
 
     private void menuAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAboutActionPerformed
-        JOptionPane.showMessageDialog(getRootPane(), "SourceBench, written by iconmaster.", "About", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(getRootPane(), "<html>SourceBench version @VERSION@. Source code found at <a href=https://github.com/iconmaster5326/SourceBench>https://github.com/iconmaster5326/SourceBench</a>.</html>", "About", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_menuAboutActionPerformed
 
     private void buttonLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLoadActionPerformed
