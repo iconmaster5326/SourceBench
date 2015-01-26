@@ -446,6 +446,7 @@ public class MainGui extends javax.swing.JFrame {
 			}
 			printLog("");
 		} catch (Exception ex) {
+			Logger.getLogger(MainGui.class.getName()).log(Level.SEVERE, null, ex);
 			fieldOutput.setText("An unknown error occured.");
 		}
     }//GEN-LAST:event_buttonRunActionPerformed
