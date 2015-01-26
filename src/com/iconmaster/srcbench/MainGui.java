@@ -442,7 +442,7 @@ public class MainGui extends javax.swing.JFrame {
 					fieldOutput.setText(sb2.toString());
 				}
 			} else {
-				fieldOutput.setText(so.output.getOutputString());
+				fieldOutput.setText("Done.");
 			}
 			printLog("");
 		} catch (Exception ex) {
