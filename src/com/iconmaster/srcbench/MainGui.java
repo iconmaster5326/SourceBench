@@ -12,6 +12,8 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -371,6 +373,7 @@ public class MainGui extends javax.swing.JFrame {
 			}
 			printLog("");
 		} catch (Exception ex) {
+			Logger.getLogger(MainGui.class.getName()).log(Level.SEVERE, "unknown error", ex);
 			fieldOutput.setText("An unknown error occured.");
 		}
     }//GEN-LAST:event_buttonCompileActionPerformed
