@@ -159,7 +159,7 @@ public class MainGui extends javax.swing.JFrame {
         jPanel4.setMinimumSize(new java.awt.Dimension(236, 425));
 
         fieldInput.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
-        fieldInput.setText("@export\nfunction hello() {\n    print(\"Hello, Source!\")\n}");
+        fieldInput.setText("@main\nfunction hello() {\n    print(\"Hello, Source!\")\n}");
         jScrollPane2.setViewportView(fieldInput);
 
         fieldLoad.addActionListener(new java.awt.event.ActionListener() {
